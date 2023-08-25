@@ -1,0 +1,6 @@
+.cache/
+.vscode/
+build/*
+!build/SDL2.dll
+!build/SDL2_image.dll
+!build/SDL2_ttf.dll
