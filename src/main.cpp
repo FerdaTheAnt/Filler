@@ -20,6 +20,8 @@ int main(int argc, char** argv)
     window.main_loop(presenter);
     window.clean();
 
+    presenter.close_presenter();
+
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -29,8 +31,8 @@ int main(int argc, char** argv)
 //TODO:
 //fix physics - hopefully done, though very buggy in powershell
 //fix spaces between sprites - done
-//add border to game board
+//add border to game board - done, but not optimal
 //add other game elements - bludger
-//UI with buttons
+//UI with buttons - in progress
 //dialog for loss, next level and win
 //FPS management

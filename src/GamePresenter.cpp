@@ -9,10 +9,16 @@ GamePresenter::GamePresenter(Game& p_game, RenderWindow& p_view)
      : game(&p_game), view(&p_view)
 {
     bubble_texture = view->loadTexture("../res/bubble.png");
-    //bubble_texture = view->loadTexture("C:\\Dev\\FJFI\\PRC2\\sdl-test\\res\\bubble.png");
     bludger_texture = view->loadTexture("../res/bludger.png");
 }
 
+void GamePresenter::close_presenter()
+{
+    if(bubble_texture != NULL)
+        SDL_DestroyTexture(bubble_texture);
+    if(bludger_texture != NULL)
+        SDL_DestroyTexture(bludger_texture);
+}
 void GamePresenter::on_mouse_clicked(float p_x, float p_y)
 {
     mouse_pressed = true;
@@ -70,7 +76,6 @@ void GamePresenter::update()
     game->update();
     view->clear();
     view->render_menu();
-    //view->render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
     view->render_border(game->get_border(), 1280, 720);
     std::vector<Bubble> bubbles = game->get_bubbles();
     if(!bubbles.empty())

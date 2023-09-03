@@ -3,11 +3,12 @@
 #include <cmath>
 
 #include "Bubble.hpp"
+#include "SDL2/SDL_rect.h"
 
 const float PI = 3.14159265;
 
 Bubble::Bubble(float p_x, float p_y, float p_radius)
-    :x(p_x), y(p_y), radius(p_radius)
+    :x(p_x), y(p_y), radius(p_radius), v_x(0), v_y(0)
 {
 
 }
@@ -119,7 +120,8 @@ void resolveBludgerCollision(Bludger& bludger)
 
 SDL_Rect Bubble::get_dst_rect()
 {
-    //decimal numbers chose in order to fit the texture better
+    //decimal numbers chosen in order to fit the texture better
+    SDL_Rect dst_rect;
     dst_rect.x = x - 1.06*radius;
     dst_rect.y = y - 1.06*radius;
     dst_rect.h = 2.12*radius;
@@ -130,6 +132,7 @@ SDL_Rect Bubble::get_dst_rect()
 
 SDL_Rect Bubble::get_src_rect()
 {
+    SDL_Rect src_rect;
     src_rect.x = 0;
     src_rect.y = 0;
     src_rect.h = 680;

@@ -38,8 +38,5 @@ private:
     float x, y, radius;
     float v_x, v_y;
 
-    SDL_Rect dst_rect;
-    SDL_Rect src_rect;
-
     bool detectRoundObjCollision(float other_x, float other_y, float other_radius);
 };

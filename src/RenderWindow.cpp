@@ -6,8 +6,11 @@
 
 #include "RenderWindow.hpp"
 #include "SDL2/SDL_events.h"
+#include "SDL2/SDL_pixels.h"
 #include "SDL2/SDL_rect.h"
 #include "SDL2/SDL_render.h"
+#include "SDL2/SDL_surface.h"
+#include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_video.h"
 
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
@@ -37,6 +40,8 @@ SDL_Texture* RenderWindow::loadTexture(const char* p_path)
 
 void RenderWindow::clean()
 {
+    if(button_texture != NULL)
+        SDL_DestroyTexture(button_texture);
     if(quit_button != nullptr)
         delete quit_button;
     if(pause_button != nullptr)
@@ -45,29 +50,53 @@ void RenderWindow::clean()
         delete info_button;
     if(newgame_button != nullptr)
         delete newgame_button;
+    if(score != nullptr)
+        delete score;
+    if(lives != nullptr)
+        delete lives;
     SDL_DestroyWindow(this->window);
 }
 
 void RenderWindow::init_ui()
 {
-    SDL_Texture* button_texture = loadTexture("../res/buttons.png");
+    button_texture = loadTexture("../res/buttons.png");
 
     int w_width, w_height;
     SDL_GetWindowSize(this->window, &w_width, &w_height);
     int button_width = 0.1*w_width;
 
-    quit_button = new Button(button_texture, button_type::QUIT, button_width, 50, 0, 0);
+    newgame_button = new Button(button_texture, button_type::NEW_GAME, button_width, 50, 0, 0);
     info_button = new Button(button_texture, button_type::INFO, button_width, 50, w_width/2 - button_width, 0);
     pause_button = new Button(button_texture, button_type::PAUSE, button_width, 50, w_width/2, 0);
-    newgame_button = new Button(button_texture, button_type::NEW_GAME, button_width, 50, w_width - button_width, 0);
+    quit_button = new Button(button_texture, button_type::QUIT, button_width, 50, w_width - button_width, 0);
+
+    font = TTF_OpenFont("../res/AXCART.TTF", 40);
+    SDL_Color my_white = {248, 248, 247, 255};
+
+    SDL_Surface* score_surface = TTF_RenderText_Solid(font, "Score: 0", my_white);
+
+    SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renderer, score_surface);
+    SDL_FreeSurface(score_surface);
+
+    score = new Label("Score 0", 50, font, my_white, score_texture, button_width + 20, 0, button_width, 50);
+
+    SDL_Surface* lives_surface = TTF_RenderText_Solid(font, "Lives: 2", my_white);
+
+    SDL_Texture* lives_texture = SDL_CreateTextureFromSurface(renderer, lives_surface);
+    SDL_FreeSurface(lives_surface);
+
+    lives = new Label("Lives: 2", 50, font, my_white, lives_texture, w_width/2 + button_width + 20, 0, button_width, 50);
 }
 
 void RenderWindow::render_menu()
 {
-    render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
+    render(newgame_button->get_src_rect(), newgame_button->get_dst_rect(), newgame_button->get_texture());
     render(pause_button->get_src_rect(), pause_button->get_dst_rect(), pause_button->get_texture());
     render(info_button->get_src_rect(), info_button->get_dst_rect(), info_button->get_texture());
-    render(newgame_button->get_src_rect(), newgame_button->get_dst_rect(), newgame_button->get_texture());
+    render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
+    
+    render(*score);
+    render(*lives);
 }
 
 void RenderWindow::render_border(int p_border, int width, int height)
@@ -123,6 +152,26 @@ void RenderWindow::render(const SDL_Rect& p_src, const SDL_Rect& p_dst, SDL_Text
     dst.x = p_dst.x;
     dst.y = p_dst.y;
     SDL_RenderCopy(renderer, p_tex, &src, &dst);
+}
+
+void RenderWindow::render(Label& label)
+{
+    SDL_Rect dst_rect;
+    dst_rect.h = label.get_dst_rect().h;
+    dst_rect.w = label.get_dst_rect().w;
+    dst_rect.x = label.get_dst_rect().x;
+    dst_rect.y = label.get_dst_rect().y;
+
+    if(label.get_changed())
+    {
+        SDL_Surface* label_surface = TTF_RenderText_Solid(label.get_font(), label.get_text(), label.get_color());
+
+        SDL_Texture* label_texture = SDL_CreateTextureFromSurface(renderer, label_surface);
+        label.set_texture(label_texture);
+        SDL_FreeSurface(label_surface);
+    }
+
+    SDL_RenderCopy(renderer, label.get_texture(), NULL, &dst_rect);
 }
 
 void RenderWindow::render(Bubble& bubble, SDL_Texture* p_tex)

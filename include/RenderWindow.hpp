@@ -7,6 +7,8 @@
 
 #include "GamePresenter.hpp"
 #include "Button.hpp"
+#include "Label.hpp"
+#include "SDL2/SDL_ttf.h"
 
 class GamePresenter;
 
@@ -20,6 +22,7 @@ public:
     void init_ui();
     void render(const SDL_Rect& p_src, const SDL_Rect& p_dst, SDL_Texture* p_tex);
     void render(Bubble& bubble, SDL_Texture* p_pex);
+    void render(Label& label);
     void display();
     void clean();
     void clear();
@@ -27,7 +30,12 @@ public:
     void pause_loop(GamePresenter& presenter);
 private:
     const int menu_height = 100;
+    SDL_Texture* button_texture;
+    SDL_Texture* score_texture;
+    Label* score;
+    Label* lives;
     Button* quit_button, *pause_button, *info_button, *newgame_button;
+    TTF_Font* font;
     SDL_Window* window;
     SDL_Renderer* renderer;
 };

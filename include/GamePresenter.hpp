@@ -10,6 +10,7 @@ class GamePresenter
 {
 public:
     GamePresenter(Game& p_game, RenderWindow& p_view);
+    void close_presenter();
     void run();
     //temp
     void update();
@@ -25,7 +26,6 @@ private:
     bool mouse_pressed = false;
     SDL_Texture* bubble_texture;
     SDL_Texture* bludger_texture;
-    //SDL_Texture* button_texture;
     Game* game;
     RenderWindow* view;
 };

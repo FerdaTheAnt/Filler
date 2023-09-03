@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.26)
 
 project(filler)
 
-#set(MSYS True)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
@@ -16,6 +15,7 @@ add_executable(filler
  src/Game.cpp
  src/Bubble.cpp
  src/Button.cpp
+ src/Label.cpp
 )
 
 target_include_directories(filler
