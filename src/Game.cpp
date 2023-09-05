@@ -86,7 +86,8 @@ void Game::update()
 
         for(Bubble& bubble : bubbles)
         {
-            bludger.resolve_bubble_collision(bubble);
+            if(bludger.resolve_bubble_collision(bubble) == true)
+                ouch();
         }
         
         bludger.move();
@@ -125,4 +126,9 @@ bool Game::making_bubble()
         return get_current_bubble().get_growing();
     }
     return false;
+}
+
+void Game::ouch()
+{
+    std::cout << "Bubble popped. Lives remaining: " << --lives << std::endl;
 }

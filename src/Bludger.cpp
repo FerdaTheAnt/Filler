@@ -41,7 +41,7 @@ SDL_Rect Bludger::get_src_rect()
     return src_rect;
 }
 
-void Bludger::resolve_bubble_collision(Bubble& bubble)
+bool Bludger::resolve_bubble_collision(Bubble& bubble)
 {
     if(detect_round_collision(bubble))
     {
@@ -51,6 +51,13 @@ void Bludger::resolve_bubble_collision(Bubble& bubble)
             float vel_norm = sqrt(v_x*v_x + v_y*v_y);
             v_x *= BLUDGER_VELOCITY/vel_norm;
             v_y *= BLUDGER_VELOCITY/vel_norm;
+            return false;
+        }
+        else
+        {
+            bubble.pop();
+            return true;
         }
     }
+    return false;
 }

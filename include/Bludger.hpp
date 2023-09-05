@@ -13,5 +13,5 @@ public:
     Bludger(float p_x, float p_y);
     SDL_Rect get_src_rect() override;
     SDL_Rect get_dst_rect() override;
-    void resolve_bubble_collision(Bubble& bubble);
+    bool resolve_bubble_collision(Bubble& bubble);
 };

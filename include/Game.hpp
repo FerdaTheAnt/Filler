@@ -37,4 +37,5 @@ private:
 
     void init_level(int p_level, int p_score);
     void spawn_bludgers(int p_level);
+    void ouch();
 };
