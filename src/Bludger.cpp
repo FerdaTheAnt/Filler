@@ -4,9 +4,10 @@
 #include "SDL2/SDL_rect.h"
 
 #include <cstdlib>
+#include <cmath>
 
 static const float BLUDGER_RADIUS = 15.0;
-static const float BLUDGER_VELOCITY = 1.0;
+static const float BLUDGER_VELOCITY = 5.0;
 
 Bludger::Bludger(float p_x, float p_y)
 :RoundEntity(p_x, p_y, BLUDGER_RADIUS)
@@ -38,4 +39,18 @@ SDL_Rect Bludger::get_src_rect()
     src_rect.w = 85;
     src_rect.h = 85;
     return src_rect;
+}
+
+void Bludger::resolve_bubble_collision(Bubble& bubble)
+{
+    if(detect_round_collision(bubble))
+    {
+        if(!bubble.get_growing())
+        {
+            RoundEntity::resolve_round_collision(bubble);
+            float vel_norm = sqrt(v_x*v_x + v_y*v_y);
+            v_x *= BLUDGER_VELOCITY/vel_norm;
+            v_y *= BLUDGER_VELOCITY/vel_norm;
+        }
+    }
 }

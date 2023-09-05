@@ -76,11 +76,15 @@ void Bubble::resolve_bubble_collision(Bubble &other)
 
 void Bubble::resolve_bludger_collision(Bludger& bludger)
 {
-    if(growing)
-    {
-        pop();
-    }
-    else
+    // if(growing)
+    // {
+    //     pop();
+    // }
+    // else
+    // {
+    //     RoundEntity::resolve_round_collision(bludger);
+    // }
+    if(!growing)
     {
         RoundEntity::resolve_round_collision(bludger);
     }

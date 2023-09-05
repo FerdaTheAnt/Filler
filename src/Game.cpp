@@ -64,11 +64,6 @@ void Game::update()
             bubble.resolve_bubble_collision(bubbles[i]);
         }
 
-        /*for(Bludger& bludger : bludgers)
-        {
-            bubble.resolve_bludger_collision(bludger);
-        }*/
-        
         if(bubble.get_growing())
         {
             bubble.grow();
@@ -84,10 +79,16 @@ void Game::update()
     for(Bludger& bludger : bludgers)
     {
         bludger.resolve_boundary_collision(width, height, border);
-        // for(unsigned int i = index; i < bludgers.size(); i++)
-        //     {
-        //         bludger.resolve_round_collision(bludgers[i]);
-        //     }
+        for(unsigned int i = index; i < bludgers.size(); i++)
+            {
+                bludger.resolve_round_collision(bludgers[i]);
+            }
+
+        for(Bubble& bubble : bubbles)
+        {
+            bludger.resolve_bubble_collision(bubble);
+        }
+        
         bludger.move();
         index++;
     }

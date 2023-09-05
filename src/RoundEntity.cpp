@@ -52,6 +52,9 @@ void RoundEntity::resolve_boundary_collision(int width, int height, GameArea& bo
 
 void RoundEntity::resolve_round_collision(RoundEntity &other)
 {
+    if (!detect_round_collision(other))
+        return;
+
     float min_allowed_dist = radius + other.radius;
     float dist_x = other.x - x;
     float dist_y = other.y - y;
