@@ -23,6 +23,7 @@ public:
     void render(const SDL_Rect& p_src, const SDL_Rect& p_dst, SDL_Texture* p_tex);
     void render(Bubble& bubble, SDL_Texture* p_pex);
     void render(Label& label);
+    void render(Bludger& bludger, SDL_Texture* p_tex);
     void display();
     void clean();
     void clear();

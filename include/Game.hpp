@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameArea.hpp"
 #include "Bubble.hpp"
 #include "Bludger.hpp"
 
@@ -8,7 +9,7 @@
 class Game
 {
 public:
-    Game(float p_width, float p_heightt, int border = 10);
+    Game(unsigned int p_width, unsigned int p_height, int p_border = 10);
     void spawn_bubble(float p_x, float p_y);
     void restart();
     void release_bubble();
@@ -16,11 +17,13 @@ public:
     Bubble& get_current_bubble();
     void update();
     std::vector<Bubble>& get_bubbles();
-    int get_border(){return border;}
+    std::vector<Bludger>& get_bludgers();
+    int get_border(){return border.border_w;}
 private:
-    float width, height;
-    int border;
+    unsigned int width, height;
     int level, score;
+
+    GameArea border;
 
     int lives, maxBubbles, countBubbles;
     float covered;
@@ -33,4 +36,5 @@ private:
     std::vector<Bludger> bludgers;
 
     void init_level(int p_level, int p_score);
+    void spawn_bludgers(int p_level);
 };

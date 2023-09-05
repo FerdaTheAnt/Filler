@@ -2,15 +2,20 @@
 
 #include <cmath>
 
+#include "GameArea.hpp"
 #include "Bubble.hpp"
+#include "RoundEntity.hpp"
 #include "SDL2/SDL_rect.h"
 
 const float PI = 3.14159265;
+static const float WALL_ELASTIC = 0.3;
+static const float OTHER_ELASTIC = 0.8; 
 
 Bubble::Bubble(float p_x, float p_y, float p_radius)
-    :x(p_x), y(p_y), radius(p_radius), v_x(0), v_y(0)
+    :RoundEntity(p_x, p_y, p_radius, WALL_ELASTIC, OTHER_ELASTIC)
 {
-
+    v_x = 0;
+    v_y = 0;
 }
 
 void Bubble::grow()
@@ -23,6 +28,7 @@ void Bubble::grow()
 
 void Bubble::pop()
 {
+    stopGrowth();
     this->radius = 0;
 }
 
@@ -41,40 +47,17 @@ void Bubble::move()
     }
 }
 
-void Bubble::resolveBoundaryCollision(int width, int height, int border)
+void Bubble::resolve_boundary_collision(int width, int height, GameArea& border)
 {
-    if (growing && (2*radius > width - 2*border || 2*radius > height - 2*border)) {
+    if (growing && (2*radius > width - 2*border.border_w || 2*radius > height - 2*border.border_w)) {
         stopGrowth();
     }
-    //right
-    if(x + radius > width - border)
-    {
-        x = width - radius - border;
-        v_x *= -friction;
-    }
-    //left
-    if(x - radius < border)
-    {
-        x = radius + border;
-        v_x *= -friction;
-    }
-    //bottom
-    if(y + radius > height - border + 100)
-    {
-        y = height - radius - border + 100;
-        v_y *= -friction;
-    }
-    //top
-    if(y-radius < border + 100)
-    {
-        y = radius + border + 100;
-        v_y *= -friction;
-    }
+    RoundEntity::resolve_boundary_collision(width, height, border);
 }
 
-void Bubble::resolveBubbleCollision(Bubble &other)
+void Bubble::resolve_bubble_collision(Bubble &other)
 {
-    if(!detectRoundObjCollision(other.x, other.y, other.radius))
+    if(!detect_round_collision(other))
         return;
 
     if(growing)
@@ -87,35 +70,20 @@ void Bubble::resolveBubbleCollision(Bubble &other)
         other.stopGrowth();
         return;
     }
-    
-    float min_allowed_dist = radius + other.radius;
-    float dist_x = other.x - x;
-    float dist_y = other.y - y;
-    float norm = sqrt(dist_x*dist_x + dist_y*dist_y);
-    float rel_v_x = other.v_x - v_x;
-    float rel_v_y = other.v_y - v_y;
 
-    double inv_total_mass = 1.0 / radius + 1.0 / other.radius;
-    double impulse = -(1 + elasticity) * (rel_v_x * dist_x + rel_v_y * dist_y) / ( norm * inv_total_mass);
-
-    other.v_x += dist_x * impulse / (norm * other.radius);
-    other.v_y += dist_y * impulse / (norm * other.radius);
-
-    v_x -= dist_x * impulse / (norm *  radius);
-    v_y -= dist_y * impulse / (norm *  radius);
-
-    float penetration = min_allowed_dist - norm;
-    
-    other.x += (dist_x / norm) * penetration / (other.radius * inv_total_mass);
-    other.y += (dist_y / norm) * penetration / (other.radius * inv_total_mass);
-
-    x -= (dist_x / norm) * penetration / (radius * inv_total_mass);
-    y -= (dist_y / norm) * penetration / (radius * inv_total_mass);
+    RoundEntity::resolve_round_collision(other);
 }
 
-void resolveBludgerCollision(Bludger& bludger)
+void Bubble::resolve_bludger_collision(Bludger& bludger)
 {
-    //TODO
+    if(growing)
+    {
+        pop();
+    }
+    else
+    {
+        RoundEntity::resolve_round_collision(bludger);
+    }
 }
 
 SDL_Rect Bubble::get_dst_rect()
@@ -139,12 +107,4 @@ SDL_Rect Bubble::get_src_rect()
     src_rect.w = 680;
 
     return src_rect;
-}
-
-bool Bubble::detectRoundObjCollision(float other_x, float other_y, float other_radius)
-{
-    float min_allowed_dist = radius + other_radius;
-    float dist = sqrt((other_x - x)*(other_x - x) + (other_y - y)*(other_y - y));
-
-    return (dist< min_allowed_dist) ? true : false;
 }

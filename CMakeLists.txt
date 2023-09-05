@@ -11,11 +11,13 @@ add_compile_options(-Wall)
 add_executable(filler 
  src/main.cpp
  src/RenderWindow.cpp
- src/GamePresenter.cpp
- src/Game.cpp
- src/Bubble.cpp
  src/Button.cpp
  src/Label.cpp
+ src/GamePresenter.cpp
+ src/Game.cpp
+ src/RoundEntity.cpp
+ src/Bubble.cpp
+ src/Bludger.cpp
 )
 
 target_include_directories(filler

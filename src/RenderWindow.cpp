@@ -189,8 +189,28 @@ void RenderWindow::render(Bubble& bubble, SDL_Texture* p_tex)
     dst.y = bubble.get_dst_rect().y;
 
     SDL_RenderCopy(renderer, p_tex, &src, &dst);
+
+    //SDL_RenderDrawRect(renderer, &dst);
 }
 
+void RenderWindow::render(Bludger& bludger, SDL_Texture* p_tex)
+{
+    SDL_Rect src;
+    src.h = bludger.get_src_rect().h;
+    src.w = bludger.get_src_rect().w;
+    src.x = bludger.get_src_rect().x;
+    src.y = bludger.get_src_rect().y;
+
+    SDL_Rect dst;
+    dst.h = bludger.get_dst_rect().h;
+    dst.w = bludger.get_dst_rect().w;
+    dst.x = bludger.get_dst_rect().x;
+    dst.y = bludger.get_dst_rect().y;
+
+    SDL_RenderCopy(renderer, p_tex, &src, &dst);
+
+    //SDL_RenderDrawRect(renderer, &dst);
+}
 void RenderWindow::display()
 {
     SDL_RenderPresent(renderer);

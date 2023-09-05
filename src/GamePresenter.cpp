@@ -19,6 +19,7 @@ void GamePresenter::close_presenter()
     if(bludger_texture != NULL)
         SDL_DestroyTexture(bludger_texture);
 }
+
 void GamePresenter::on_mouse_clicked(float p_x, float p_y)
 {
     mouse_pressed = true;
@@ -83,6 +84,14 @@ void GamePresenter::update()
         for(Bubble& bubble : bubbles)
         {
             view->render(bubble, this->bubble_texture);
+        }
+    }
+    std::vector<Bludger> bludgers = game->get_bludgers();
+    if(!bludgers.empty())
+    {
+        for(Bludger& bludger : bludgers)
+        {
+            view->render(bludger, this->bludger_texture);
         }
     }
     view->display();
