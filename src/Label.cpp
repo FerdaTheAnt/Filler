@@ -11,12 +11,11 @@ Label::Label(string p_text,
             int p_font_size, 
             TTF_Font* p_font,
             SDL_Color& p_color,
-            SDL_Texture* p_texture,
             int p_x, 
             int p_y, 
             int p_w, 
             int p_h)
-:text(p_text), font_size(p_font_size), font(p_font), color(p_color), texture(p_texture)
+:text(p_text), font_size(p_font_size), font(p_font), color(p_color), texture(nullptr)
 {
     dst_rect.x = p_x;
     dst_rect.y = p_y;

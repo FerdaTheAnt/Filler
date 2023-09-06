@@ -74,19 +74,9 @@ void RenderWindow::init_ui()
     font = TTF_OpenFont("../res/AXCART.TTF", 40);
     SDL_Color my_white = {248, 248, 247, 255};
 
-    SDL_Surface* cleared_surface = TTF_RenderText_Solid(font, "Cleared: 0 %", my_white);
+    cleared = new Label("Cleared: 0 %", 50, font, my_white, button_width + 20, 0, 2*button_width, 50);
 
-    SDL_Texture* cleared_texture = SDL_CreateTextureFromSurface(renderer, cleared_surface);
-    SDL_FreeSurface(cleared_surface);
-
-    cleared = new Label("Cleared: 0 %", 50, font, my_white, cleared_texture, button_width + 20, 0, 2*button_width, 50);
-
-    SDL_Surface* lives_surface = TTF_RenderText_Solid(font, "Lives: 2", my_white);
-
-    SDL_Texture* lives_texture = SDL_CreateTextureFromSurface(renderer, lives_surface);
-    SDL_FreeSurface(lives_surface);
-
-    lives = new Label("Lives: 2", 50, font, my_white, lives_texture, w_width - 2*button_width - 50, 0, button_width + 20, 50);
+    lives = new Label("Lives: 2", 50, font, my_white, w_width - 2*button_width - 50, 0, button_width + 20, 50);
 }
 
 void RenderWindow::render_menu()

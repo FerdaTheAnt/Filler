@@ -11,7 +11,7 @@ using std::string;
 class Label
 {
 public:
-    Label(string p_text, int p_font_size, TTF_Font* p_font, SDL_Color& p_color, SDL_Texture* p_texture, int p_x, int p_y, int p_w, int p_h);
+    Label(string p_text, int p_font_size, TTF_Font* p_font, SDL_Color& p_color, int p_x, int p_y, int p_w, int p_h);
     void set_text(string new_text);
     bool get_changed() {return changed;}
     const char* get_text() { return text.c_str(); }
@@ -23,7 +23,7 @@ public:
 private:
     string text;
     int font_size;
-    bool changed;
+    bool changed = true;
     TTF_Font *font;
     SDL_Color color;
     SDL_Texture* texture;
