@@ -18,6 +18,7 @@ Game::Game(unsigned int p_width, unsigned int p_height, int p_border)
 void Game::init_level(int p_level, int p_score)
 {
     bubbles.clear();
+    bubble_scored.clear();
     spawn_bludgers(p_level);
     level = p_level;
     score = p_score;
@@ -39,6 +40,7 @@ void Game::restart()
 void Game::spawn_bubble(float p_x, float p_y)
 {
     bubbles.emplace_back(p_x, p_y, 20);
+    bubble_scored.emplace_back(false);
 }
 
 void Game::spawn_bludgers(int p_level)
@@ -71,11 +73,15 @@ void Game::update()
         else
         {
             bubble.move();
+
+            if(!bubble_scored[index-1])
+                count_bubble(index-1);
         }
         index++;
     }
 
     index = 1;
+    int bubble_index = 0;
     for(Bludger& bludger : bludgers)
     {
         bludger.resolve_boundary_collision(width, height, border);
@@ -87,12 +93,24 @@ void Game::update()
         for(Bubble& bubble : bubbles)
         {
             if(bludger.resolve_bubble_collision(bubble) == true)
-                ouch();
+                ouch(bubble_index);
+            bubble_index++;
         }
-        
+        bubble_index = 0;
+
         bludger.move();
         index++;
     }
+}
+
+void Game::count_bubble(int bubble_index)
+{
+    Bubble bubble = bubbles[bubble_index];
+    int game_area = width*height;
+    int bubble_area = bubble.get_area();
+    covered += 100 * (float) bubble_area/game_area;
+    bubble_scored[bubble_index] = true;
+    std::cout << "Area covered: " << covered << " %" <<std::endl;
 }
 
 Bubble& Game::get_current_bubble()
@@ -128,7 +146,8 @@ bool Game::making_bubble()
     return false;
 }
 
-void Game::ouch()
+void Game::ouch(int bubble_index)
 {
     std::cout << "Bubble popped. Lives remaining: " << --lives << std::endl;
+    bubble_scored[bubble_index] = true;
 }

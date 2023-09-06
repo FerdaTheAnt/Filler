@@ -16,10 +16,12 @@ public:
     bool making_bubble();
     Bubble& get_current_bubble();
     void update();
+    void count_bubble(int bubble_index);
     std::vector<Bubble>& get_bubbles();
     std::vector<Bludger>& get_bludgers();
     int get_border(){return border.border_w;}
     int get_lives(){return lives;}
+    float get_covered(){return covered;}
 private:
     unsigned int width, height;
     int level, score;
@@ -34,9 +36,10 @@ private:
     bool growing_bubble = false;
 
     std::vector<Bubble> bubbles;
+    std::vector<bool> bubble_scored;
     std::vector<Bludger> bludgers;
 
     void init_level(int p_level, int p_score);
     void spawn_bludgers(int p_level);
-    void ouch();
+    void ouch(int bubble_index);
 };

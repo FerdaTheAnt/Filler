@@ -32,7 +32,7 @@ void Bubble::pop()
     this->radius = 0;
 }
 
-float Bubble::getArea()
+float Bubble::get_area()
 {
     return PI*radius*radius;
 }

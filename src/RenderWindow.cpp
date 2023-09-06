@@ -51,8 +51,8 @@ void RenderWindow::clean()
         delete info_button;
     if(newgame_button != nullptr)
         delete newgame_button;
-    if(score != nullptr)
-        delete score;
+    if(cleared != nullptr)
+        delete cleared;
     if(lives != nullptr)
         delete lives;
     SDL_DestroyWindow(this->window);
@@ -74,12 +74,12 @@ void RenderWindow::init_ui()
     font = TTF_OpenFont("../res/AXCART.TTF", 40);
     SDL_Color my_white = {248, 248, 247, 255};
 
-    SDL_Surface* score_surface = TTF_RenderText_Solid(font, "Score: 0", my_white);
+    SDL_Surface* cleared_surface = TTF_RenderText_Solid(font, "Cleared: 0 %", my_white);
 
-    SDL_Texture* score_texture = SDL_CreateTextureFromSurface(renderer, score_surface);
-    SDL_FreeSurface(score_surface);
+    SDL_Texture* cleared_texture = SDL_CreateTextureFromSurface(renderer, cleared_surface);
+    SDL_FreeSurface(cleared_surface);
 
-    score = new Label("Score 0", 50, font, my_white, score_texture, button_width + 20, 0, button_width, 50);
+    cleared = new Label("Cleared: 0 %", 50, font, my_white, cleared_texture, button_width + 20, 0, button_width, 50);
 
     SDL_Surface* lives_surface = TTF_RenderText_Solid(font, "Lives: 2", my_white);
 
@@ -96,14 +96,14 @@ void RenderWindow::render_menu()
     render(info_button->get_src_rect(), info_button->get_dst_rect(), info_button->get_texture());
     render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
     
-    render(*score);
+    render(*cleared);
     render(*lives);
 }
 
-void RenderWindow::update_labels(int p_lives, int p_bubbles_left, int p_score)
+void RenderWindow::update_labels(int p_lives, float p_cleared, int p_bubbles_left)
 {
     lives->set_text("Lives: " + std::to_string(p_lives));
-    score->set_text("Score: " + std::to_string(p_score));
+    cleared->set_text("Cleared: " + std::to_string(p_cleared) + " %");
 }
 
 void RenderWindow::render_border(int p_border, int width, int height)

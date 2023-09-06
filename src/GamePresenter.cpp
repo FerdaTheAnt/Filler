@@ -94,6 +94,6 @@ void GamePresenter::update()
             view->render(bludger, this->bludger_texture);
         }
     }
-    view->update_labels(game->get_lives());
+    view->update_labels(game->get_lives(), game->get_covered());
     view->display();
 }

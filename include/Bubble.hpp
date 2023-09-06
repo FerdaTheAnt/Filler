@@ -22,7 +22,7 @@ public:
             y = p_y;
         }
     }
-    float getArea();
+    float get_area();
     void stopGrowth()
     {
         growing = false;
