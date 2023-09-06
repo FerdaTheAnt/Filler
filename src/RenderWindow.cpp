@@ -1,4 +1,5 @@
 #include<iostream>
+#include <string>
 
 #include "Bubble.hpp"
 #include "Button.hpp"
@@ -97,6 +98,12 @@ void RenderWindow::render_menu()
     
     render(*score);
     render(*lives);
+}
+
+void RenderWindow::update_labels(int p_lives, int p_bubbles_left, int p_score)
+{
+    lives->set_text("Lives: " + std::to_string(p_lives));
+    score->set_text("Score: " + std::to_string(p_score));
 }
 
 void RenderWindow::render_border(int p_border, int width, int height)

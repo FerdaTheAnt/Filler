@@ -19,6 +19,7 @@ public:
     std::vector<Bubble>& get_bubbles();
     std::vector<Bludger>& get_bludgers();
     int get_border(){return border.border_w;}
+    int get_lives(){return lives;}
 private:
     unsigned int width, height;
     int level, score;

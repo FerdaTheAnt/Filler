@@ -26,8 +26,11 @@ Label::Label(string p_text,
 
 void Label::set_text(string new_text)
 {
-    text = new_text;
-    changed = true;
+    if(text != new_text)
+    {
+        text = new_text;
+        changed = true;
+    }
 }
 
 void Label::set_texture(SDL_Texture* p_texture)

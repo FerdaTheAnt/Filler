@@ -27,6 +27,7 @@ public:
     void display();
     void clean();
     void clear();
+    void update_labels(int p_lives = 2, int p_score = 0, int p_bubbles_left = 0);
     void main_loop(GamePresenter& presenter);
     void pause_loop(GamePresenter& presenter);
 private:
