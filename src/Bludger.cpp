@@ -12,12 +12,9 @@ static const float BLUDGER_VELOCITY = 5.0;
 Bludger::Bludger(float p_x, float p_y)
 :RoundEntity(p_x, p_y, BLUDGER_RADIUS)
 {
-    //int sign = 1;
-    int sign = rand() % 100;
-    (sign > 50) ? sign = 1 : sign = -1;
-    float direction = sign * (rand() % 100) * 0.01; //generate random number between 0 and 1 
+    float direction = (rand() % 200) * 0.01 - 1; //generate random number between -1 and 1
     v_x = direction * BLUDGER_VELOCITY;
-    v_y = (1-direction) * BLUDGER_VELOCITY;
+    (direction < 0) ? v_y = -sqrt(1-direction*direction) * BLUDGER_VELOCITY : v_y = sqrt(1-direction*direction) * BLUDGER_VELOCITY;
 }
 
 SDL_Rect Bludger::get_dst_rect()
