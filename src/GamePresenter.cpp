@@ -10,6 +10,7 @@ GamePresenter::GamePresenter(Game& p_game, RenderWindow& p_view)
 {
     bubble_texture = view->loadTexture("../res/bubble.png");
     bludger_texture = view->loadTexture("../res/bludger.png");
+    info_window = view->create_info_window();
 }
 
 void GamePresenter::close_presenter()
@@ -65,6 +66,7 @@ void GamePresenter::on_newgame_button_clicked()
 void GamePresenter::on_info_button_clicked()
 {
     std::cout << "info button clicked, window popup TODO." << std::endl;
+    info_window->loop();
 }
 
 void GamePresenter::on_pause_button_clicked()
@@ -95,5 +97,15 @@ void GamePresenter::update()
         }
     }
     view->update_labels(game->get_lives(), game->get_covered());
+    //view->create_window();
     view->display();
+    if(game->get_win())
+    {
+        //next_level_window->loop();
+        std::cout << "game won" << std::endl;
+    }
+    else if(game->get_lose())
+    {
+        std::cout << "game lost" << std::endl;
+    }
 }

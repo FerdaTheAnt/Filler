@@ -24,12 +24,13 @@ void Game::init_level(int p_level, int p_score)
     score = p_score;
 
     lives = level + 1;
-    maxBubbles = 18 + 2*level;
-    countBubbles = 0;
+    max_bubbles = 18 + 2*level;
+    count_bubbles = 0;
 
     covered = 0;
 
     win = false;
+    lose = false;
 }
 
 void Game::restart()
@@ -39,6 +40,11 @@ void Game::restart()
 
 void Game::spawn_bubble(float p_x, float p_y)
 {
+    if(++count_bubbles > max_bubbles && !win)
+    {
+        lose = true;
+        return;
+    }
     bubbles.emplace_back(p_x, p_y, 20);
     bubble_scored.emplace_back(false);
 }
@@ -110,7 +116,11 @@ void Game::count_bubble(int bubble_index)
     int bubble_area = bubble.get_area();
     covered += 100 * (float) bubble_area/game_area;
     bubble_scored[bubble_index] = true;
-    std::cout << "Area covered: " << covered << " %" <<std::endl;
+    //std::cout << "Area covered: " << covered << " %" <<std::endl;
+    if(covered > 66.7)
+    {
+        win = true;
+    }
 }
 
 Bubble& Game::get_current_bubble()
@@ -148,6 +158,8 @@ bool Game::making_bubble()
 
 void Game::ouch(int bubble_index)
 {
-    std::cout << "Bubble popped. Lives remaining: " << --lives << std::endl;
+    if(--lives <= 0)
+        lose = true;
+    //std::cout << "Bubble popped. Lives remaining: " << --lives << std::endl;
     bubble_scored[bubble_index] = true;
 }

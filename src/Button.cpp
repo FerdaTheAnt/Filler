@@ -28,6 +28,12 @@ Button::Button(SDL_Texture* p_tex, button_type p_type, int p_width, int p_height
         case button_type::QUIT:
             src_rect.y = 3*src_height;
             break;
+        case button_type::CLOSE:
+            src_rect.y = 4*src_height;
+            break;
+        case button_type::NEXT_LEVEL:
+            src_rect.y = 5*src_height;
+            break;
     }
 }
 

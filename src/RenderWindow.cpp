@@ -3,6 +3,7 @@
 
 #include "Bubble.hpp"
 #include "Button.hpp"
+#include "InfoWindow.hpp"
 #include "SDL2/SDL.h"
 
 #include "RenderWindow.hpp"
@@ -15,7 +16,7 @@
 #include "SDL2/SDL_video.h"
 
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
-    :window(NULL), renderer(NULL)
+    :Window(nullptr, nullptr), window(NULL), renderer(NULL)
 {
     window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
 
@@ -24,19 +25,9 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
         std::cerr << "Window failed to initialize. Error: " << SDL_GetError() << std::endl;
     }
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    this->set_window(window);
+    this->set_render(renderer);
     init_ui();
-}
-
-SDL_Texture* RenderWindow::loadTexture(const char* p_path)
-{
-    SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(renderer, p_path);
-
-    if (texture == NULL) 
-    {
-        std::cerr << "Failed to load texture. Error: " << SDL_GetError() << std::endl;
-    }
-    return texture;
 }
 
 void RenderWindow::clean()
@@ -71,23 +62,23 @@ void RenderWindow::init_ui()
     pause_button = new Button(button_texture, button_type::PAUSE, button_width, 50, w_width/2, 0);
     quit_button = new Button(button_texture, button_type::QUIT, button_width, 50, w_width - button_width, 0);
 
-    font = TTF_OpenFont("../res/AXCART.TTF", 40);
+    font = TTF_OpenFont("../res/AXCART.TTF", 20);
     SDL_Color my_white = {248, 248, 247, 255};
 
-    cleared = new Label("Cleared: 0 %", 50, font, my_white, button_width + 20, 0, 2*button_width, 50);
+    cleared = new Label("Cleared: 0 %", 50, font, my_white, button_width + 20, 0);
 
-    lives = new Label("Lives: 2", 50, font, my_white, w_width - 2*button_width - 50, 0, button_width + 20, 50);
+    lives = new Label("Lives: 2", 50, font, my_white, w_width - 2*button_width - 50, 0);
 }
 
 void RenderWindow::render_menu()
 {
-    render(newgame_button->get_src_rect(), newgame_button->get_dst_rect(), newgame_button->get_texture());
-    render(pause_button->get_src_rect(), pause_button->get_dst_rect(), pause_button->get_texture());
-    render(info_button->get_src_rect(), info_button->get_dst_rect(), info_button->get_texture());
-    render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
+    Window::render(newgame_button->get_src_rect(), newgame_button->get_dst_rect(), newgame_button->get_texture());
+    Window::render(pause_button->get_src_rect(), pause_button->get_dst_rect(), pause_button->get_texture());
+    Window::render(info_button->get_src_rect(), info_button->get_dst_rect(), info_button->get_texture());
+    Window::render(quit_button->get_src_rect(), quit_button->get_dst_rect(), quit_button->get_texture());
     
-    render(*cleared);
-    render(*lives);
+    Window::render(*cleared);
+    Window::render(*lives);
 }
 
 void RenderWindow::update_labels(int p_lives, float p_cleared, int p_bubbles_left)
@@ -129,48 +120,6 @@ void RenderWindow::render_border(int p_border, int width, int height)
     SDL_RenderFillRects(renderer, border, 4);
 }
 
-void RenderWindow::clear()
-{
-    SDL_SetRenderDrawColor(renderer, 61, 63, 53, 255);
-    SDL_RenderClear(renderer);
-}
-
-void RenderWindow::render(const SDL_Rect& p_src, const SDL_Rect& p_dst, SDL_Texture* p_tex)
-{
-    SDL_Rect src;
-    src.h = p_src.h;
-    src.w = p_src.w;
-    src.x = p_src.x;
-    src.y = p_src.y;
-
-    SDL_Rect dst;
-    dst.h = p_dst.h;
-    dst.w = p_dst.w;
-    dst.x = p_dst.x;
-    dst.y = p_dst.y;
-    SDL_RenderCopy(renderer, p_tex, &src, &dst);
-}
-
-void RenderWindow::render(Label& label)
-{
-    SDL_Rect dst_rect;
-    dst_rect.h = label.get_dst_rect().h;
-    dst_rect.w = label.get_dst_rect().w;
-    dst_rect.x = label.get_dst_rect().x;
-    dst_rect.y = label.get_dst_rect().y;
-
-    if(label.get_changed())
-    {
-        SDL_Surface* label_surface = TTF_RenderText_Solid(label.get_font(), label.get_text(), label.get_color());
-
-        SDL_Texture* label_texture = SDL_CreateTextureFromSurface(renderer, label_surface);
-        label.set_texture(label_texture);
-        SDL_FreeSurface(label_surface);
-    }
-
-    SDL_RenderCopy(renderer, label.get_texture(), NULL, &dst_rect);
-}
-
 void RenderWindow::render(Bubble& bubble, SDL_Texture* p_tex)
 {
     SDL_Rect src;
@@ -186,8 +135,6 @@ void RenderWindow::render(Bubble& bubble, SDL_Texture* p_tex)
     dst.y = bubble.get_dst_rect().y;
 
     SDL_RenderCopy(renderer, p_tex, &src, &dst);
-
-    //SDL_RenderDrawRect(renderer, &dst);
 }
 
 void RenderWindow::render(Bludger& bludger, SDL_Texture* p_tex)
@@ -205,12 +152,20 @@ void RenderWindow::render(Bludger& bludger, SDL_Texture* p_tex)
     dst.y = bludger.get_dst_rect().y;
 
     SDL_RenderCopy(renderer, p_tex, &src, &dst);
-
-    //SDL_RenderDrawRect(renderer, &dst);
 }
-void RenderWindow::display()
+
+InfoWindow* RenderWindow::create_info_window()
 {
-    SDL_RenderPresent(renderer);
+    InfoWindow* info_window = new InfoWindow(renderer, window);
+    return info_window;
+}
+
+void RenderWindow::buttons_not_hovered()
+{
+    quit_button->not_hovered();
+    info_button->not_hovered();
+    pause_button->not_hovered();
+    newgame_button->not_hovered();
 }
 
 void RenderWindow::main_loop(GamePresenter& presenter)
@@ -255,6 +210,18 @@ void RenderWindow::main_loop(GamePresenter& presenter)
                         presenter.on_newgame_button_clicked();
                     break;
                 case SDL_MOUSEMOTION:
+                    mouse_point.x = e.button.x;
+                    mouse_point.y = e.button.y;
+                    if (SDL_HasIntersection(&mouse_point, &quit_button->get_dst_rect()))
+                        quit_button->on_hovered();
+                    else if (SDL_HasIntersection(&mouse_point, &pause_button->get_dst_rect()))
+                        pause_button->on_hovered();
+                    else if (SDL_HasIntersection(&mouse_point, &info_button->get_dst_rect()))
+                        info_button->on_hovered();
+                    else if (SDL_HasIntersection(&mouse_point, &newgame_button->get_dst_rect()))
+                        newgame_button->on_hovered();
+                    else
+                        buttons_not_hovered();
                     presenter.on_mouse_dragged(e.button.x, e.button.y);
                     break;
                 case SDL_MOUSEBUTTONUP:

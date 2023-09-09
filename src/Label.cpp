@@ -12,15 +12,15 @@ Label::Label(string p_text,
             TTF_Font* p_font,
             SDL_Color& p_color,
             int p_x, 
-            int p_y, 
-            int p_w, 
-            int p_h)
+            int p_y
+            )
 :text(p_text), font_size(p_font_size), font(p_font), color(p_color), texture(nullptr)
 {
     dst_rect.x = p_x;
     dst_rect.y = p_y;
-    dst_rect.w = p_w;
-    dst_rect.h = p_h;
+    dst_rect.w = 0;
+    dst_rect.h = 0;
+    TTF_SizeText(font, text.c_str(), &dst_rect.w, &dst_rect.h);
 }
 
 void Label::set_text(string new_text)
@@ -28,6 +28,7 @@ void Label::set_text(string new_text)
     if(text != new_text)
     {
         text = new_text;
+        TTF_SizeText(font, text.c_str(), &dst_rect.w, &dst_rect.h);
         changed = true;
     }
 }

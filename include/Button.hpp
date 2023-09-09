@@ -8,7 +8,9 @@ enum class button_type
     QUIT,
     PAUSE,
     INFO,
-    NEW_GAME
+    NEW_GAME,
+    CLOSE,
+    NEXT_LEVEL
 };
 
 class Button
@@ -20,10 +22,11 @@ public:
     SDL_Rect& get_dst_rect();
     SDL_Rect& get_src_rect();
     void on_hovered(){hover = true;}
+    void not_hovered(){hover = false;}
     void set_position(int p_x, int p_y);
 protected:
-    const int src_width = 252;
-    const int src_height = 102;
+    int src_width = 476;
+    int src_height = 192;
     SDL_Texture* texture;
     SDL_Rect src_rect, dst_rect;
     button_type type;

@@ -18,6 +18,8 @@ add_executable(filler
  src/RoundEntity.cpp
  src/Bubble.cpp
  src/Bludger.cpp
+ src/Window.cpp
+ src/InfoWindow.cpp
 )
 
 target_include_directories(filler

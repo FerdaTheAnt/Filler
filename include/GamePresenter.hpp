@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.hpp"
+#include "InfoWindow.hpp"
 #include "RenderWindow.hpp"
 #include "SDL2/SDL_render.h"
 
@@ -28,4 +29,5 @@ private:
     SDL_Texture* bludger_texture;
     Game* game;
     RenderWindow* view;
+    InfoWindow* info_window;
 };

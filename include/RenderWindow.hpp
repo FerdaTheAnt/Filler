@@ -1,32 +1,31 @@
 #pragma once
 
+#include "Window.hpp"
+#include "InfoWindow.hpp"
+#include "GamePresenter.hpp"
+#include "Button.hpp"
+#include "Label.hpp"
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_rect.h"
 #include "SDL2/SDL_render.h"
-
-#include "GamePresenter.hpp"
-#include "Button.hpp"
-#include "Label.hpp"
 #include "SDL2/SDL_ttf.h"
 
 class GamePresenter;
 
-class RenderWindow
+class RenderWindow : public Window
 {
 public:
     RenderWindow(const char* p_title, int p_w, int p_h);
-    SDL_Texture* loadTexture(const char* p_path);
     void render_border(int border, int width, int height);
     void render_menu();
     void init_ui();
-    void render(const SDL_Rect& p_src, const SDL_Rect& p_dst, SDL_Texture* p_tex);
     void render(Bubble& bubble, SDL_Texture* p_pex);
-    void render(Label& label);
     void render(Bludger& bludger, SDL_Texture* p_tex);
-    void display();
     void clean();
-    void clear();
+    InfoWindow* create_info_window();
+    void buttons_not_hovered();
     void update_labels(int p_lives = 2, float p_cleared = 0, int p_bubbles_left = 0);
     void main_loop(GamePresenter& presenter);
     void pause_loop(GamePresenter& presenter);

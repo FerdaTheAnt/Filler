@@ -22,16 +22,18 @@ public:
     int get_border(){return border.border_w;}
     int get_lives(){return lives;}
     float get_covered(){return covered;}
+    bool get_win(){return win;}
+    bool get_lose(){return lose;}
 private:
     unsigned int width, height;
     int level, score;
 
     GameArea border;
 
-    int lives, maxBubbles, countBubbles;
+    int lives, max_bubbles, count_bubbles;
     float covered;
 
-    bool win;
+    bool win, lose;
 
     bool growing_bubble = false;
 
