@@ -38,6 +38,11 @@ void Game::restart()
     init_level(1, 0);
 }
 
+void Game::next_level()
+{
+    init_level(++level, score);
+}
+
 void Game::spawn_bubble(float p_x, float p_y)
 {
     if(++count_bubbles > max_bubbles && !win)

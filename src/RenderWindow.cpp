@@ -4,6 +4,7 @@
 #include "Bubble.hpp"
 #include "Button.hpp"
 #include "InfoWindow.hpp"
+#include "NextLevelWindow.hpp"
 #include "SDL2/SDL.h"
 
 #include "RenderWindow.hpp"
@@ -158,6 +159,12 @@ InfoWindow* RenderWindow::create_info_window()
 {
     InfoWindow* info_window = new InfoWindow(renderer, window);
     return info_window;
+}
+
+NextLevelWindow* RenderWindow::create_next_level_window(Game* game)
+{
+    NextLevelWindow* next_window = new NextLevelWindow(renderer, window, game);
+    return next_window;
 }
 
 void RenderWindow::buttons_not_hovered()

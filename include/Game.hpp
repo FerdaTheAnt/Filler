@@ -12,6 +12,7 @@ public:
     Game(unsigned int p_width, unsigned int p_height, int p_border = 10);
     void spawn_bubble(float p_x, float p_y);
     void restart();
+    void next_level();
     void release_bubble();
     bool making_bubble();
     Bubble& get_current_bubble();
@@ -24,6 +25,8 @@ public:
     float get_covered(){return covered;}
     bool get_win(){return win;}
     bool get_lose(){return lose;}
+    int get_level(){return level;}
+    int get_bubbles_left(){return max_bubbles - count_bubbles;}
 private:
     unsigned int width, height;
     int level, score;

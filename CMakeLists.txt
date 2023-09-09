@@ -20,6 +20,7 @@ add_executable(filler
  src/Bludger.cpp
  src/Window.cpp
  src/InfoWindow.cpp
+ src/NextLevelWindow.cpp
 )
 
 target_include_directories(filler

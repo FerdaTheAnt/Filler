@@ -1,8 +1,11 @@
 #pragma once
 
+#include "NextLevelWindow.hpp"
 #include "Window.hpp"
 #include "InfoWindow.hpp"
+#include "NextLevelWindow.hpp"
 #include "GamePresenter.hpp"
+#include "Game.hpp"
 #include "Button.hpp"
 #include "Label.hpp"
 
@@ -25,6 +28,7 @@ public:
     void render(Bludger& bludger, SDL_Texture* p_tex);
     void clean();
     InfoWindow* create_info_window();
+    NextLevelWindow* create_next_level_window(Game* game);
     void buttons_not_hovered();
     void update_labels(int p_lives = 2, float p_cleared = 0, int p_bubbles_left = 0);
     void main_loop(GamePresenter& presenter);

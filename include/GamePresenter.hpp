@@ -2,6 +2,7 @@
 
 #include "Game.hpp"
 #include "InfoWindow.hpp"
+#include "NextLevelWindow.hpp"
 #include "RenderWindow.hpp"
 #include "SDL2/SDL_render.h"
 
@@ -23,6 +24,7 @@ public:
     void on_info_button_clicked();
     void on_quit_button_clicked();
     void on_newgame_button_clicked();
+    void level_win();
 private:
     bool mouse_pressed = false;
     SDL_Texture* bubble_texture;
@@ -30,4 +32,5 @@ private:
     Game* game;
     RenderWindow* view;
     InfoWindow* info_window;
+    NextLevelWindow* next_window;
 };
