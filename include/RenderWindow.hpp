@@ -1,9 +1,9 @@
 #pragma once
 
-#include "NextLevelWindow.hpp"
 #include "Window.hpp"
 #include "InfoWindow.hpp"
 #include "NextLevelWindow.hpp"
+#include "GameLostWindow.hpp"
 #include "GamePresenter.hpp"
 #include "Game.hpp"
 #include "Button.hpp"
@@ -29,6 +29,7 @@ public:
     void clean();
     InfoWindow* create_info_window();
     NextLevelWindow* create_next_level_window(Game* game);
+    GameLostWindow* create_lose_window();
     void buttons_not_hovered();
     void update_labels(int p_lives = 2, float p_cleared = 0, int p_bubbles_left = 0);
     void main_loop(GamePresenter& presenter);

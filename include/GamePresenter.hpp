@@ -3,6 +3,7 @@
 #include "Game.hpp"
 #include "InfoWindow.hpp"
 #include "NextLevelWindow.hpp"
+#include "GameLostWindow.hpp"
 #include "RenderWindow.hpp"
 #include "SDL2/SDL_render.h"
 
@@ -25,6 +26,7 @@ public:
     void on_quit_button_clicked();
     void on_newgame_button_clicked();
     void level_win();
+    void game_lost();
 private:
     bool mouse_pressed = false;
     SDL_Texture* bubble_texture;
@@ -33,4 +35,6 @@ private:
     RenderWindow* view;
     InfoWindow* info_window;
     NextLevelWindow* next_window;
+    GameLostWindow* lose_window;
+    bool lost = false;
 };

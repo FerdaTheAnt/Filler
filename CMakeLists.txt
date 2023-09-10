@@ -21,6 +21,7 @@ add_executable(filler
  src/Window.cpp
  src/InfoWindow.cpp
  src/NextLevelWindow.cpp
+ src/GameLostWindow.cpp
 )
 
 target_include_directories(filler
