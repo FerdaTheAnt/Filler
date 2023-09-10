@@ -5,6 +5,7 @@
 #include "Button.hpp"
 #include "Game.hpp"
 #include "GameLostWindow.hpp"
+#include "GameWonWindow.hpp"
 #include "InfoWindow.hpp"
 #include "NextLevelWindow.hpp"
 #include "SDL2/SDL.h"
@@ -173,6 +174,12 @@ GameLostWindow* RenderWindow::create_lose_window()
 {
     GameLostWindow* lose_window = new GameLostWindow(renderer, window);
     return lose_window;
+}
+
+GameWonWindow* RenderWindow::create_win_window(Game* game)
+{
+    GameWonWindow* win_window = new GameWonWindow(renderer, window, game);
+    return win_window;
 }
 
 void RenderWindow::buttons_not_hovered()

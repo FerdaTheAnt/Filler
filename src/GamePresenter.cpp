@@ -13,6 +13,7 @@ GamePresenter::GamePresenter(Game& p_game, RenderWindow& p_view)
     info_window = view->create_info_window();
     next_window = view->create_next_level_window(game);
     lose_window = view->create_lose_window();
+    win_window = view->create_win_window(game);
 }
 
 void GamePresenter::close_presenter()
@@ -82,18 +83,20 @@ void GamePresenter::level_win()
     game->next_level();
 }
 
+void GamePresenter::game_win()
+{
+    if(win_window->loop() == true)
+        on_newgame_button_clicked();
+    else
+        on_quit_button_clicked();
+}
+
 void GamePresenter::game_lost()
 {
-    //next_window->loop();
-    //on_newgame_button_clicked();
     if(lose_window->loop() == true)
-    {
         on_newgame_button_clicked();
-    }
     else
-    {
         on_quit_button_clicked();
-    }
 }
 
 void GamePresenter::update()
@@ -122,16 +125,21 @@ void GamePresenter::update()
     //view->create_window();
     view->display();
 
-    if(game->get_win())
+    if(game->get_win() && !won)
     {
-        level_win();
-        //std::cout << "game won" << std::endl;
+        if(game->get_level() < 2)
+            level_win();
+        else
+        {
+            game_win();
+            won = true;
+            SDL_Delay(200);
+        }
     }
     else if(game->get_lose() && !lost)
     {
         game_lost();
         lost = true;
-        SDL_Delay(300);
-        //std::cout << "game lost" << std::endl;
+        SDL_Delay(200);
     }
 }
