@@ -16,9 +16,9 @@ GamePresenter::GamePresenter(Game& p_game, RenderWindow& p_view)
     bubble_texture = view->loadTexture("../res/bubble.png");
     bludger_texture = view->loadTexture("../res/bludger.png");
     info_window = view->create_info_window();
-    next_window = view->create_next_level_window(game);
+    next_window = view->create_next_level_window();
     lose_window = view->create_lose_window();
-    win_window = view->create_win_window(game);
+    win_window = view->create_win_window();
 }
 
 void GamePresenter::close_presenter()
@@ -88,13 +88,13 @@ void GamePresenter::on_pause_button_clicked()
 void GamePresenter::level_win()
 {
     mouse_pressed = false;
-    next_window->loop();
+    next_window->loop(game);
     game->next_level();
 }
 
 void GamePresenter::game_win()
 {
-    if(win_window->loop() == true)
+    if(win_window->loop(game) == true)
         on_newgame_button_clicked();
     else
         on_quit_button_clicked();
@@ -156,6 +156,6 @@ void GamePresenter::update()
 void GamePresenter::run()
 {
     view->main_loop(*this);
-    view->clean();
+    view->close_window();
     close_presenter();
 }

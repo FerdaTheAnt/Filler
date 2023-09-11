@@ -1,5 +1,6 @@
 #include "GameWonWindow.hpp"
 
+#include "SDL2/SDL_render.h"
 #include "Window.hpp"
 #include "Label.hpp"
 #include "Button.hpp"
@@ -9,10 +10,9 @@
 #include "SDL2/SDL_ttf.h"
 #include <string>
 
-GameWonWindow::GameWonWindow(SDL_Renderer* p_renderer, SDL_Window* p_window, Game* game)
+GameWonWindow::GameWonWindow(SDL_Renderer* p_renderer, SDL_Window* p_window)
 :Window(p_renderer, p_window)
 {
-    final_score = game->get_score();
     create_layout();
 }
 
@@ -31,14 +31,14 @@ void GameWonWindow::create_layout()
     dialog = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, size_w, size_h);
 
     TTF_Font* font = TTF_OpenFont("../res/AXCART.TTF", 18);
+    TTF_Font* big_font = TTF_OpenFont("../res/AXCART.TTF", 24);
     SDL_Color my_white = {248, 248, 247, 255};
 
     int line_h = 20;
-    lines.push_back(Label("Game completed!", 18, font, my_white, border_w, border_w));
-    lines.push_back(Label("Final score: " + std::to_string(final_score), 18, font, my_white, border_w, line_h + border_w));
+    lines.push_back(Label("Game completed!", 24, big_font, my_white, 2*border_w, 2*border_w));
+    lines.push_back(Label("Final score: " + std::to_string(final_score), 18, font, my_white, 2*border_w, line_h + 3*border_w));
 
-    //SDL_Texture* p_tex, button_type p_type, int p_width, int p_height, int p_x = 0, int p_y = 0
-    button_texture = IMG_LoadTexture(renderer, "../res/buttons.png");
+    SDL_Texture* button_texture = IMG_LoadTexture(renderer, "../res/buttons.png");
     int button_w = 0.3*size_w;
     int button_h = 0.4*button_w;
     close_button = new Button(button_texture, button_type::CLOSE, button_w, button_h,
@@ -47,6 +47,16 @@ void GameWonWindow::create_layout()
     newgame_button = new Button(button_texture, button_type::NEW_GAME, button_w, button_h,
                              0.25*size_w - 0.5*button_w,
                             size_h - 1.5*button_h);
+}
+
+GameWonWindow::~GameWonWindow()
+{
+    if(close_button != nullptr)
+        delete close_button;
+    if(newgame_button != nullptr)
+        delete newgame_button;
+    if(dialog != nullptr)
+        SDL_DestroyTexture(dialog);
 }
 
 void GameWonWindow::show()
@@ -105,8 +115,12 @@ void GameWonWindow::draw_border()
     SDL_RenderFillRects(renderer, border, 4);
 }
 
-bool GameWonWindow::loop()
+bool GameWonWindow::loop(Game* game)
 {
+    final_score = game->get_score();
+
+    lines[1].set_text("Final score: " + std::to_string(final_score));
+    
     bool running = true;
     bool newgame = false;
 

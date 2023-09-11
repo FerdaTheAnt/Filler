@@ -17,7 +17,7 @@ class Button
 {
 public:
     Button(SDL_Texture* p_tex, button_type p_type, int p_width, int p_height, int p_x = 0, int p_y = 0);
-    ~Button(){};
+    ~Button();
     SDL_Texture* get_texture();
     SDL_Rect& get_dst_rect();
     SDL_Rect& get_src_rect();

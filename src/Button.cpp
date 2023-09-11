@@ -37,6 +37,12 @@ Button::Button(SDL_Texture* p_tex, button_type p_type, int p_width, int p_height
     }
 }
 
+Button::~Button()
+{
+    if (texture != nullptr)
+        SDL_DestroyTexture(texture);
+}
+
 SDL_Texture* Button::get_texture()
 {
     return texture;

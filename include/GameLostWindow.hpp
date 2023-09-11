@@ -12,11 +12,11 @@ class GameLostWindow : public Window
 {
 public:
     GameLostWindow(SDL_Renderer* p_renderer, SDL_Window* p_window);
+    ~GameLostWindow();
     void create_layout();
     bool loop();
     void show();
 private:
-    SDL_Texture* button_texture;
     const int border_w = 5;
     int pos_x, pos_y; //position in the parent window
     int size_w, size_h;

@@ -8,7 +8,6 @@
 #include "Button.hpp"
 #include "Label.hpp"
 #include "GamePresenter.hpp"
-#include "Game.hpp"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -27,11 +26,11 @@ public:
     void init_ui();
     void render(Bubble& bubble, SDL_Texture* p_pex);
     void render(Bludger& bludger, SDL_Texture* p_tex);
-    void clean();
+    void close_window();
     InfoWindow* create_info_window();
-    NextLevelWindow* create_next_level_window(Game* game);
+    NextLevelWindow* create_next_level_window();
     GameLostWindow* create_lose_window();
-    GameWonWindow* create_win_window(Game* game);
+    GameWonWindow* create_win_window();
 
     void buttons_not_hovered();
     void update_labels(int p_lives = 2, float p_cleared = 0, int p_bubbles_left = 0);
@@ -39,7 +38,7 @@ public:
     void pause_loop(GamePresenter& presenter);
 private:
     const int menu_height = 100;
-    SDL_Texture* button_texture;
+
     SDL_Texture* score_texture;
     Label* cleared;
     Label* lives;

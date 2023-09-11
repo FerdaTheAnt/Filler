@@ -20,7 +20,6 @@ Bludger::Bludger(float p_x, float p_y)
 
 SDL_Rect Bludger::get_dst_rect()
 {
-    //1.52
     SDL_Rect dst_rect;
     dst_rect.w = 2*1.53*BLUDGER_RADIUS;
     dst_rect.h = 2*1.53*BLUDGER_RADIUS;

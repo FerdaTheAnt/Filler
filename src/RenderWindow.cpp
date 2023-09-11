@@ -8,7 +8,6 @@
 #include "GameLostWindow.hpp"
 #include "GamePresenter.hpp"
 #include "Bubble.hpp"
-#include "Game.hpp"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_events.h"
@@ -36,10 +35,8 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
     init_ui();
 }
 
-void RenderWindow::clean()
+void RenderWindow::close_window()
 {
-    if(button_texture != NULL)
-        SDL_DestroyTexture(button_texture);
     if(quit_button != nullptr)
         delete quit_button;
     if(pause_button != nullptr)
@@ -59,10 +56,11 @@ void RenderWindow::clean()
 
 void RenderWindow::init_ui()
 {
-    button_texture = loadTexture("../res/buttons.png");
+    SDL_Texture* button_texture = loadTexture("../res/buttons.png");
 
     int w_width, w_height;
     SDL_GetWindowSize(this->window, &w_width, &w_height);
+
     int button_width = 0.1*w_width;
 
     newgame_button = new Button(button_texture, button_type::NEW_GAME, button_width, 50, 0, 0);
@@ -168,9 +166,9 @@ InfoWindow* RenderWindow::create_info_window()
     return info_window;
 }
 
-NextLevelWindow* RenderWindow::create_next_level_window(Game* game)
+NextLevelWindow* RenderWindow::create_next_level_window()
 {
-    NextLevelWindow* next_window = new NextLevelWindow(renderer, window, game);
+    NextLevelWindow* next_window = new NextLevelWindow(renderer, window);
     return next_window;
 }
 
@@ -180,9 +178,9 @@ GameLostWindow* RenderWindow::create_lose_window()
     return lose_window;
 }
 
-GameWonWindow* RenderWindow::create_win_window(Game* game)
+GameWonWindow* RenderWindow::create_win_window()
 {
-    GameWonWindow* win_window = new GameWonWindow(renderer, window, game);
+    GameWonWindow* win_window = new GameWonWindow(renderer, window);
     return win_window;
 }
 

@@ -1,6 +1,7 @@
 #include "GameLostWindow.hpp"
 
 #include "SDL2/SDL_rect.h"
+#include "SDL2/SDL_render.h"
 #include "Window.hpp"
 #include "Button.hpp"
 #include "Label.hpp"
@@ -32,14 +33,15 @@ void GameLostWindow::create_layout()
     dialog = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, size_w, size_h);
 
     TTF_Font* font = TTF_OpenFont("../res/AXCART.TTF", 18);
+    TTF_Font* big_font = TTF_OpenFont("../res/AXCART.TTF", 24);
+
     SDL_Color my_white = {248, 248, 247, 255};
 
     int line_h = 20;
-    lines.push_back(Label("GAME OVER!", 18, font, my_white, border_w + size_w/2, border_w));
-    lines.push_back(Label("Click a button to continue.", 18, font, my_white, border_w, line_h + border_w));
+    lines.push_back(Label("GAME OVER!", 24, big_font, my_white, 2*border_w, 2*border_w));
+    lines.push_back(Label("Click a button to continue.", 18, font, my_white, 2*border_w, line_h + 3*border_w));
 
-    //SDL_Texture* p_tex, button_type p_type, int p_width, int p_height, int p_x = 0, int p_y = 0
-    button_texture = IMG_LoadTexture(renderer, "../res/buttons.png");
+    SDL_Texture* button_texture = IMG_LoadTexture(renderer, "../res/buttons.png");
     int button_w = 0.3*size_w;
     int button_h = 0.4*button_w;
     quit_button = new Button(button_texture, button_type::CLOSE, button_w, button_h,
@@ -48,6 +50,16 @@ void GameLostWindow::create_layout()
     newgame_button = new Button(button_texture, button_type::NEW_GAME, button_w, button_h,
                              0.25*size_w - 0.5*button_w,
                             size_h - 1.5*button_h);
+}
+
+GameLostWindow::~GameLostWindow()
+{
+    if(quit_button != nullptr)
+        delete quit_button;
+    if(newgame_button != nullptr)
+        delete newgame_button;
+    if(dialog != nullptr)
+        SDL_DestroyTexture(dialog);
 }
 
 void GameLostWindow::show()
@@ -126,7 +138,7 @@ bool GameLostWindow::loop()
     newgame_button_rect.y += pos_y;
 
     SDL_Event e;
-    
+
     while(running)
     {
         while(SDL_PollEvent(&e))

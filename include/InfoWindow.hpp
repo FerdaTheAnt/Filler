@@ -12,6 +12,7 @@ class InfoWindow : public Window
 {
 public:
     InfoWindow(SDL_Renderer* p_renderer, SDL_Window* p_window);
+    ~InfoWindow();
     void create_layout();
     void loop();
     void show();
@@ -20,7 +21,6 @@ private:
     int pos_x, pos_y; //position in the parent window
     int size_w, size_h;
     std::vector<Label> lines;
-    SDL_Texture* button_texture;
     Button* close_button;
     SDL_Texture* dialog;
 
