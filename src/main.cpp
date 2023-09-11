@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();
 
-    RenderWindow window("Filler v1.0", 1280, 820);
+    RenderWindow window("Filler v1.0", 1280, 770);
     Game game(1280, 720);
 
     GamePresenter presenter(game, window);

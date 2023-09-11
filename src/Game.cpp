@@ -12,8 +12,8 @@ Game::Game(unsigned int p_width, unsigned int p_height, int p_border)
     :width(p_width), height(p_height)
 {
     border.border_w = p_border;
-    border.top = 100;
-    border.bottom = 820;
+    border.top = 50;
+    border.bottom = 770;
     border.right = 1280 - p_border;
     init_level(1, 0);
 }

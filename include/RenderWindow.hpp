@@ -33,17 +33,16 @@ public:
     GameWonWindow* create_win_window();
 
     void buttons_not_hovered();
-    void update_labels(int p_lives = 2, float p_cleared = 0, int p_bubbles_left = 0);
+    void update_labels(int p_lives = 2, int p_bubbles_left = 0, float p_cleared = 0, int p_score = 0, int p_level = 1);
     void main_loop(GamePresenter& presenter);
     void pause_loop(GamePresenter& presenter);
 private:
-    const int menu_height = 100;
+    const int menu_height = 50;
 
     SDL_Texture* score_texture;
-    Label* cleared;
-    Label* lives;
+    Label* cleared, *score, *bubbles_left, *lives, *level;
     Button* quit_button, *pause_button, *info_button, *newgame_button;
-    TTF_Font* font;
+    TTF_Font* font, *big_font;
     SDL_Window* window;
     SDL_Renderer* renderer;
 };

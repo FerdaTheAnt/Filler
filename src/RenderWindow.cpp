@@ -17,6 +17,7 @@
 #include "SDL2/SDL_surface.h"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_video.h"
+#include "Window.hpp"
 #include<iostream>
 #include <string>
 
@@ -51,6 +52,8 @@ void RenderWindow::close_window()
         delete lives;
     if(font != nullptr)
         TTF_CloseFont(font);
+    if(big_font != nullptr)
+        TTF_CloseFont(big_font);
     SDL_DestroyWindow(this->window);
 }
 
@@ -69,11 +72,16 @@ void RenderWindow::init_ui()
     quit_button = new Button(button_texture, button_type::QUIT, button_width, 50, w_width - button_width, 0);
 
     font = TTF_OpenFont("../res/AXCART.TTF", 20);
+    big_font = TTF_OpenFont("../res/AXCART.TTF", 30);
     SDL_Color my_white = {248, 248, 247, 255};
 
-    cleared = new Label("Cleared: 0 %", 50, font, my_white, button_width + 20, 0);
+    cleared = new Label("Cleared: 0 %", 20, font, my_white, button_width + 20, 0);
+    score = new Label("Score: 0", 20, font, my_white, button_width + 20, 20);
 
-    lives = new Label("Lives: 2", 50, font, my_white, w_width - 2*button_width - 50, 0);
+    level = new Label("Level: 2", 30, big_font, my_white, w_width/2 + button_width + 10, 5);
+
+    lives = new Label("Lives: 2", 20, font, my_white, w_width - 2*button_width - 50, 0);
+    bubbles_left = new Label("Bubbles left: 20", 20, font, my_white, w_width - 2*button_width - 50, 20);
 }
 
 void RenderWindow::render_menu()
@@ -85,12 +93,19 @@ void RenderWindow::render_menu()
     
     Window::render(*cleared);
     Window::render(*lives);
+    Window::render(*score);
+    Window::render(*bubbles_left);
+    Window::render(*level);
+
 }
 
-void RenderWindow::update_labels(int p_lives, float p_cleared, int p_bubbles_left)
+void RenderWindow::update_labels(int p_lives,  int p_bubbles_left, float p_cleared, int p_score, int p_level)
 {
     lives->set_text("Lives: " + std::to_string(p_lives));
     cleared->set_text("Cleared: " + std::to_string(p_cleared) + " %");
+    bubbles_left->set_text("Bubbles left: " + std::to_string(p_bubbles_left));
+    level->set_text("Level: " + std::to_string(p_level));
+    score->set_text("Score: " + std::to_string(p_score));
 }
 
 void RenderWindow::render_border(int p_border, int width, int height)
@@ -158,30 +173,6 @@ void RenderWindow::render(Bludger& bludger, SDL_Texture* p_tex)
     dst.y = bludger.get_dst_rect().y;
 
     SDL_RenderCopy(renderer, p_tex, &src, &dst);
-}
-
-InfoWindow* RenderWindow::create_info_window()
-{
-    InfoWindow* info_window = new InfoWindow(renderer, window);
-    return info_window;
-}
-
-NextLevelWindow* RenderWindow::create_next_level_window()
-{
-    NextLevelWindow* next_window = new NextLevelWindow(renderer, window);
-    return next_window;
-}
-
-GameLostWindow* RenderWindow::create_lose_window()
-{
-    GameLostWindow* lose_window = new GameLostWindow(renderer, window);
-    return lose_window;
-}
-
-GameWonWindow* RenderWindow::create_win_window()
-{
-    GameWonWindow* win_window = new GameWonWindow(renderer, window);
-    return win_window;
 }
 
 void RenderWindow::buttons_not_hovered()
@@ -255,7 +246,7 @@ void RenderWindow::main_loop(GamePresenter& presenter)
                     break;
             }           
         }
-        //presenter.on_mouse_pressed();
+
         presenter.update();
 
         frame_time = SDL_GetTicks() - frame_start;
@@ -308,4 +299,28 @@ void RenderWindow::pause_loop(GamePresenter& presenter)
                 break;
         }
     }
+}
+
+InfoWindow* RenderWindow::create_info_window()
+{
+    InfoWindow* info_window = new InfoWindow(renderer, window);
+    return info_window;
+}
+
+NextLevelWindow* RenderWindow::create_next_level_window()
+{
+    NextLevelWindow* next_window = new NextLevelWindow(renderer, window);
+    return next_window;
+}
+
+GameLostWindow* RenderWindow::create_lose_window()
+{
+    GameLostWindow* lose_window = new GameLostWindow(renderer, window);
+    return lose_window;
+}
+
+GameWonWindow* RenderWindow::create_win_window()
+{
+    GameWonWindow* win_window = new GameWonWindow(renderer, window);
+    return win_window;
 }

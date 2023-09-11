@@ -114,6 +114,7 @@ void GamePresenter::update()
     view->clear();
     view->render_menu();
     view->render_border(game->get_border(), 1280, 720);
+    
     std::vector<Bubble> bubbles = game->get_bubbles();
     if(!bubbles.empty())
     {
@@ -122,6 +123,7 @@ void GamePresenter::update()
             view->render(bubble, this->bubble_texture);
         }
     }
+
     std::vector<Bludger> bludgers = game->get_bludgers();
     if(!bludgers.empty())
     {
@@ -130,8 +132,13 @@ void GamePresenter::update()
             view->render(bludger, this->bludger_texture);
         }
     }
-    view->update_labels(game->get_lives(), game->get_covered());
-    //view->create_window();
+
+    view->update_labels(game->get_lives(), 
+                        game->get_bubbles_left(),
+                        game->get_covered(), 
+                        game->get_score(),
+                        game->get_level());
+
     view->display();
 
     if(game->get_win() && !won)
