@@ -1,6 +1,9 @@
 #include "InfoWindow.hpp"
 
+#include "Window.hpp"
 #include "Button.hpp"
+#include "Label.hpp"
+
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_events.h"
 #include "SDL2/SDL_image.h"
@@ -9,7 +12,6 @@
 #include "SDL2/SDL_render.h"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_video.h"
-#include "Window.hpp"
 #include <iostream>
 
 InfoWindow::InfoWindow(SDL_Renderer* p_renderer, SDL_Window* p_window)

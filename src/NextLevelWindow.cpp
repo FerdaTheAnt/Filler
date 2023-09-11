@@ -1,5 +1,9 @@
 #include "NextLevelWindow.hpp"
+
 #include "Window.hpp"
+#include "Button.hpp"
+#include "Label.hpp"
+#include "Game.hpp"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -10,7 +14,7 @@ NextLevelWindow::NextLevelWindow(SDL_Renderer* p_renderer, SDL_Window* p_window,
 {
     level = game->get_level();
     lives = game->get_lives();
-    score = game->get_covered();
+    score = game->get_score();
     bubbles_left = game->get_bubbles_left();
 
     create_layout();

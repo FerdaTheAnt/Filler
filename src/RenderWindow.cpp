@@ -1,16 +1,16 @@
-#include<iostream>
-#include <string>
+#include "RenderWindow.hpp"
 
-#include "Bubble.hpp"
 #include "Button.hpp"
-#include "Game.hpp"
-#include "GameLostWindow.hpp"
-#include "GameWonWindow.hpp"
+#include "Label.hpp"
 #include "InfoWindow.hpp"
 #include "NextLevelWindow.hpp"
-#include "SDL2/SDL.h"
+#include "GameWonWindow.hpp"
+#include "GameLostWindow.hpp"
+#include "GamePresenter.hpp"
+#include "Bubble.hpp"
+#include "Game.hpp"
 
-#include "RenderWindow.hpp"
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_events.h"
 #include "SDL2/SDL_pixels.h"
 #include "SDL2/SDL_rect.h"
@@ -18,6 +18,8 @@
 #include "SDL2/SDL_surface.h"
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_video.h"
+#include<iostream>
+#include <string>
 
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
     :Window(nullptr, nullptr), window(NULL), renderer(NULL)
@@ -50,6 +52,8 @@ void RenderWindow::clean()
         delete cleared;
     if(lives != nullptr)
         delete lives;
+    if(font != nullptr)
+        TTF_CloseFont(font);
     SDL_DestroyWindow(this->window);
 }
 

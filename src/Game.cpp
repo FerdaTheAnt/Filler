@@ -1,6 +1,9 @@
-#include "Bubble.hpp"
-
 #include "Game.hpp"
+
+#include "GameArea.hpp"
+#include "Bubble.hpp"
+#include "Bludger.hpp"
+
 #include <algorithm>
 #include <vector>
 #include <iostream>
@@ -121,11 +124,17 @@ void Game::count_bubble(int bubble_index)
     int bubble_area = bubble.get_area();
     covered += 100 * (float) bubble_area/game_area;
     bubble_scored[bubble_index] = true;
-    //std::cout << "Area covered: " << covered << " %" <<std::endl;
+    score += level * 100 * bubble_area/game_area;
     if(covered > 66.7)
     {
+        add_level_bonus();
         win = true;
     }
+}
+
+void Game::add_level_bonus()
+{
+    score += 10*lives*level;
 }
 
 Bubble& Game::get_current_bubble()
@@ -165,6 +174,5 @@ void Game::ouch(int bubble_index)
 {
     if(--lives <= 0)
         lose = true;
-    //std::cout << "Bubble popped. Lives remaining: " << --lives << std::endl;
     bubble_scored[bubble_index] = true;
 }

@@ -1,11 +1,11 @@
-#include "Bludger.hpp"
-
-#include <cmath>
-
-#include "GameArea.hpp"
 #include "Bubble.hpp"
+
 #include "RoundEntity.hpp"
+#include "Bludger.hpp"
+#include "GameArea.hpp"
+
 #include "SDL2/SDL_rect.h"
+#include <cmath>
 
 const float PI = 3.14159265;
 static const float WALL_ELASTIC = 0.3;
@@ -72,18 +72,6 @@ void Bubble::resolve_bubble_collision(Bubble &other)
     }
 
     RoundEntity::resolve_round_collision(other);
-}
-
-void Bubble::resolve_bludger_collision(Bludger& bludger)
-{
-    if(growing)
-    {
-        pop();
-    }
-    else
-    {
-        RoundEntity::resolve_round_collision(bludger);
-    }
 }
 
 SDL_Rect Bubble::get_dst_rect()

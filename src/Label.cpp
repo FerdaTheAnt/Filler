@@ -1,8 +1,8 @@
 #include "Label.hpp"
+
 #include "SDL2/SDL_rect.h"
 #include "SDL2/SDL_render.h"
 #include "SDL2/SDL_ttf.h"
-
 #include <string>
 
 using std::string;

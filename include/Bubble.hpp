@@ -3,6 +3,7 @@
 #include "GameArea.hpp"
 #include "RoundEntity.hpp"
 #include "Bludger.hpp"
+
 #include "SDL2/SDL_rect.h"
 
 class Bludger;
@@ -32,7 +33,6 @@ public:
     SDL_Rect get_dst_rect() override;
     void resolve_boundary_collision(int width, int height, GameArea& border) override;
     void resolve_bubble_collision(Bubble& other);
-    void resolve_bludger_collision(Bludger& bludger);
 private:
     const float gravity = 0.1;
     bool growing = true;

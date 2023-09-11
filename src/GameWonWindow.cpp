@@ -1,6 +1,8 @@
 #include "GameWonWindow.hpp"
 
 #include "Window.hpp"
+#include "Label.hpp"
+#include "Button.hpp"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -10,7 +12,7 @@
 GameWonWindow::GameWonWindow(SDL_Renderer* p_renderer, SDL_Window* p_window, Game* game)
 :Window(p_renderer, p_window)
 {
-    final_score = game->get_covered();
+    final_score = game->get_score();
     create_layout();
 }
 

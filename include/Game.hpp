@@ -27,6 +27,7 @@ public:
     bool get_lose(){return lose;}
     int get_level(){return level;}
     int get_bubbles_left(){return max_bubbles - count_bubbles;}
+    int get_score(){return score;}
 private:
     unsigned int width, height;
     int level, score;
@@ -47,4 +48,5 @@ private:
     void init_level(int p_level, int p_score);
     void spawn_bludgers(int p_level);
     void ouch(int bubble_index);
+    void add_level_bonus();
 };

@@ -1,7 +1,7 @@
+#include "Button.hpp"
+
 #include "SDL2/SDL_rect.h"
 #include "SDL2/SDL_render.h"
-
-#include "Button.hpp"
 
 Button::Button(SDL_Texture* p_tex, button_type p_type, int p_width, int p_height, int p_x, int p_y)
 :texture(p_tex), type(p_type), hover(false)

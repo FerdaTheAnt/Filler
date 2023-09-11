@@ -1,11 +1,11 @@
+#include "RenderWindow.hpp"
+#include "GamePresenter.hpp"
+#include "Game.hpp"
+
 #include <iostream>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-
-#include "RenderWindow.hpp"
-#include "SDL2/SDL_events.h"
-#include "SDL2/SDL_render.h"
 
 int main(int argc, char** argv)
 {
@@ -17,10 +17,7 @@ int main(int argc, char** argv)
     Game game(1280, 720);
 
     GamePresenter presenter(game, window);
-    window.main_loop(presenter);
-    window.clean();
-
-    presenter.close_presenter();
+    presenter.run();
 
     TTF_Quit();
     IMG_Quit();
@@ -29,10 +26,7 @@ int main(int argc, char** argv)
 }
 
 //TODO:
-//fix physics - hopefully done, though very buggy in powershell
-//fix spaces between sprites - done
 //add border to game board - done, but not optimal
-//add other game elements - bludger
 //UI with buttons - in progress
 //dialog for loss, next level and win
 //FPS management

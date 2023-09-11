@@ -1,8 +1,9 @@
 #include "Bludger.hpp"
 
 #include "RoundEntity.hpp"
-#include "SDL2/SDL_rect.h"
+#include "Bubble.hpp"
 
+#include "SDL2/SDL_rect.h"
 #include <cstdlib>
 #include <cmath>
 

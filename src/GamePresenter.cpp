@@ -1,12 +1,17 @@
 #include "GamePresenter.hpp"
+
+#include "RenderWindow.hpp"
+#include "InfoWindow.hpp"
+#include "NextLevelWindow.hpp"
+#include "GameLostWindow.hpp"
+#include "GameWonWindow.hpp"
 #include "Game.hpp"
-#include "SDL2/SDL_render.h"
-#include "SDL2/SDL_timer.h"
+
 #include <iostream>
 #include <vector>
 
 GamePresenter::GamePresenter(Game& p_game, RenderWindow& p_view)
-     : game(&p_game), view(&p_view)
+     : view(&p_view), game(&p_game)
 {
     bubble_texture = view->loadTexture("../res/bubble.png");
     bludger_texture = view->loadTexture("../res/bludger.png");
@@ -22,6 +27,16 @@ void GamePresenter::close_presenter()
         SDL_DestroyTexture(bubble_texture);
     if(bludger_texture != NULL)
         SDL_DestroyTexture(bludger_texture);
+    if(info_window != nullptr)
+        delete info_window;
+    if(next_window != nullptr)
+        delete next_window;
+    if(lose_window != nullptr)
+        delete lose_window;
+    if(win_window != nullptr)
+        delete win_window;
+    if(game != nullptr)
+        delete game;
 }
 
 void GamePresenter::on_mouse_clicked(float p_x, float p_y)
@@ -38,13 +53,6 @@ void GamePresenter::on_mouse_dragged(float p_x, float p_y)
     }
 }
 
-void GamePresenter::on_mouse_pressed()
-{
-    if(mouse_pressed)
-    {
-        game->get_current_bubble().grow();
-    }
-}
 void GamePresenter::on_mouse_released()
 {
     if(mouse_pressed)
@@ -63,12 +71,12 @@ void GamePresenter::on_quit_button_clicked()
 
 void GamePresenter::on_newgame_button_clicked()
 {
+    mouse_pressed = false;
     game->restart();
 }
 
 void GamePresenter::on_info_button_clicked()
 {
-    std::cout << "info button clicked, window popup TODO." << std::endl;
     info_window->loop();
 }
 
@@ -79,6 +87,7 @@ void GamePresenter::on_pause_button_clicked()
 
 void GamePresenter::level_win()
 {
+    mouse_pressed = false;
     next_window->loop();
     game->next_level();
 }
@@ -127,7 +136,7 @@ void GamePresenter::update()
 
     if(game->get_win() && !won)
     {
-        if(game->get_level() < 2)
+        if(game->get_level() < 3)
             level_win();
         else
         {
@@ -142,4 +151,11 @@ void GamePresenter::update()
         lost = true;
         SDL_Delay(200);
     }
+}
+
+void GamePresenter::run()
+{
+    view->main_loop(*this);
+    view->clean();
+    close_presenter();
 }

@@ -5,10 +5,10 @@
 #include "NextLevelWindow.hpp"
 #include "GameLostWindow.hpp"
 #include "GameWonWindow.hpp"
-#include "GamePresenter.hpp"
-#include "Game.hpp"
 #include "Button.hpp"
 #include "Label.hpp"
+#include "GamePresenter.hpp"
+#include "Game.hpp"
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"

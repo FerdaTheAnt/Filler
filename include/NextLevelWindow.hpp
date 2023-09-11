@@ -1,12 +1,12 @@
 #pragma once
 
-#include "SDL2/SDL_render.h"
 #include "Window.hpp"
 #include "Label.hpp"
 #include "Button.hpp"
 #include "Game.hpp"
 
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_render.h"
 #include <vector>
 
 class NextLevelWindow : public Window
