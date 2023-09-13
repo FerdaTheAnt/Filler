@@ -20,6 +20,7 @@
 #include "Window.hpp"
 #include<iostream>
 #include <string>
+#include <sstream>
 
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
     :Window(nullptr, nullptr), window(NULL), renderer(NULL)
@@ -102,7 +103,12 @@ void RenderWindow::render_menu()
 void RenderWindow::update_labels(int p_lives,  int p_bubbles_left, float p_cleared, int p_score, int p_level)
 {
     lives->set_text("Lives: " + std::to_string(p_lives));
-    cleared->set_text("Cleared: " + std::to_string(p_cleared) + " %");
+    
+    std::ostringstream out;
+    out.precision(2);
+    out << std::fixed << p_cleared;
+
+    cleared->set_text("Cleared: " + out.str() + " %");
     bubbles_left->set_text("Bubbles left: " + std::to_string(p_bubbles_left));
     level->set_text("Level: " + std::to_string(p_level));
     score->set_text("Score: " + std::to_string(p_score));
